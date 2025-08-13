@@ -1,69 +1,23 @@
 const WEATHER_API_KEY = 'PSMLFGRWQW9GDZ6Z5ZHMKZYCR';
 const WEATHER_API_BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 
-async function getWeather(location) {
-    try {
-        const responseF = await fetch(`${WEATHER_API_BASE_URL}${location}?key=${WEATHER_API_KEY}`);
-        const weatherDataF = await responseF.json();
-        const responseC = await fetch(`${WEATHER_API_BASE_URL}${location}?key=${WEATHER_API_KEY}&unitgroup=metric`);
-        const weatherDataC = await responseC.json();
-        const address = weatherDataF['resolvedAddress'];
-        //console.log(weatherDataF, weatherDataC);
-        return { address, weatherDataF, weatherDataC }
-    } catch (error) {
-        console.error(error);
-    }
+async function getWeatherData (location) {
+    const responseF = await fetch(`${WEATHER_API_BASE_URL}${location}?key=${WEATHER_API_KEY}`, {mode: 'cors'});
+    const weatherDataF = await responseF.json();
+    const responseC = await fetch(`${WEATHER_API_BASE_URL}${location}?key=${WEATHER_API_KEY}&unitGroup=metric`, {mode: 'cors'});
+    const weatherDataC = await responseC.json();
+    const address = weatherDataF['resolvedAddress'];
+    return { address, weatherDataF, weatherDataC }
 }
 
-function getWeatherToday (weatherDataF, weatherDataC) {
-    try {
-        const dataF = weatherDataF.currentConditions;
-        const dataC = weatherDataC.currentConditions;
-        const today = {
-            'conditons': dataF['conditions'],
-            'alerts': [
-                weatherDataF['alerts'], 
-                weatherDataC['alerts']
-            ],
-            'temp': [
-                dataF['temp'], 
-                dataC['temp']
-            ],
-            'humidity': dataF['humidity'],
-            'precip': [
-                dataF['precip'],
-                dataC['precip']
-            ],
-            'wind': [
-                dataF['windspeed'],
-                dataC['windspeed']
-            ],
-            'hours': [
-                weatherDataF.days[0]['hours'].map(hour => ({
-                    'temp': hour['temp'],
-                    'precip': hour['precipprob'],
-                    'wind': hour['windspeed']
-                })),
-                weatherDataC.days[0]['hours'].map(hour => ({
-                    'temp': hour['temp'],
-                    'precip': hour['precipprob'],
-                    'wind': hour['windspeed']
-                })),
-            ]
-        };
-        console.log(today)
-        return today;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-function getLaterWeather (dataF, dataC) {
+function processWeatherData (dataF, dataC) {
     const days = []
-    for (let i = 1; i < 7; i++) {
+    for (let i = 0; i <= 7; i++) {
         let dayF = dataF.days[i];
         let dayC = dataC.days[i];
-        days.push({
+
+        let day = {
+            'day': getDayString((new Date().getDay() + i) % 7),
             'conditions': dayF['conditions'],
             'maxTemp': [
                 dayF['tempmax'],
@@ -74,10 +28,7 @@ function getLaterWeather (dataF, dataC) {
                 dayC['tempmin']
             ],
             'humidity': dayF['humidity'],
-            'precip': [
-                dayF['precipprob'],
-                dayC['precipprob']
-            ],
+            'precip': dayF['precipprob'],
             'wind': [
                 dayF['windspeed'],
                 dayC['windspeed']
@@ -94,8 +45,51 @@ function getLaterWeather (dataF, dataC) {
                     'wind': hour['windspeed']
                 }))
             ]
-        })
+        };
+        
+        if (i === 0) {
+            day = {
+                ...day,
+                'time': [getTime('US'), getTime('metric')],
+                'alerts': [
+                    dataF['alerts'].map((alert) => alert.headline), 
+                    dataC['alerts'].map((alert) => alert.headline)
+                ],
+                'temp': [dataF['currentConditions']['temp'], dataC['currentConditions']['temp']]
+            };
+        }
+
+        days.push(day);
     }
-    console.log(days)
+
     return days;
 }
+
+function getDayString (day) {
+    const daysOfTheWeek = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ];
+
+    return daysOfTheWeek[day];
+}
+
+function getTime (units) {
+    let hours = new Date().getHours();
+    let minutes = new Date().getMinutes();
+    let suffix = ''
+
+    if (units === 'US') {
+        if (hours < 12) {
+            suffix = 'AM';
+        } else {
+            hours %= 12;
+            suffix = 'PM';
+        }
+
+        if (hours === 0) hours = 12;
+    }
+
+    return `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${suffix}`.trim();
+}
+
+export { getWeatherData, processWeatherData };
