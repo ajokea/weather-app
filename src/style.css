@@ -2,3 +2,215 @@
     box-sizing: border-box;
     margin: 0;
 }
+
+img {
+    width: 5vw;
+    height: 8vh;
+}
+
+.laterWeather-div img {
+    width: 3vw;
+    height: 5vh;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(24, 24, 24);
+    color: gray;
+    padding-top: 30px;
+}
+
+input {
+    appearance: none;
+    width: 52vw;
+    height: 40px;
+    border-color: gray;
+    border-radius: 3px;
+    border-style: solid;
+}
+
+form button {
+    height: 40px;
+    border-radius: 3px;
+    border: none white;
+    background-color: gray;
+    color: white;
+}
+
+form {
+    display: flex;
+}
+
+.backdrop {
+    height: 100vh;
+    width: 100vw;
+    border-radius: 18px;
+    position: absolute;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(3px);
+}
+
+.error {
+    position: fixed;
+    height: 150px;
+    width: 350px;
+    z-index: 1;
+    left: 38vw;
+    background-color: white;
+    border: solid black 2px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    color: red;
+}
+
+.error button {
+    border: solid black 1px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 3px;
+    margin-right: 3px;
+    margin-left: auto;
+    padding: 0;
+}
+
+.error p {
+    margin: 35px auto;
+}
+
+.weather-div {
+    display: flex;
+    flex-direction: column;
+    width: 55vw;
+    gap: 2vh;
+    margin-top: auto;
+}
+
+button {
+    cursor: pointer;
+}
+
+.stats-div {
+    display: flex;
+    gap: 1vw;
+    flex-shrink: 0;
+}
+
+.displayedTemp-div {
+    display: flex;
+    align-items: flex-start;
+}
+
+.displayedTemp-div button:first-child, .hourlyWeather-div button:first-child, .hourlyWeather-div button:nth-child(2) {
+    border-right: solid gray 0.5px;
+}
+
+.displayedTemp-div button:nth-child(2), .hourlyWeather-div button:nth-child(2), .hourlyWeather-div button:nth-child(3) {
+    border-left: solid gray 0.5px;
+}
+
+.stats-div button, .hourlyWeather-div button {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+}
+
+button:first-child {
+    padding-left: 3px;
+}
+
+.location-div {
+    text-align: right;
+    flex: 1 0.5 auto;
+}
+
+.displayedWeather-div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2vh;
+}
+
+.hourlyWeather-div {
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.hours-div {
+    margin-top: 2vh;
+    display: flex;
+    gap: 25px;
+    overflow: auto;
+}
+
+.hours-div > div p {
+    width: max-content;
+    margin: 0 auto;
+}
+
+.hours-div p:last-child {
+    font-size: 11px;
+}
+
+.laterWeather-div {
+    margin-top: 2vh;
+    display: flex;
+    gap: 25px;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.laterWeather-div > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+}
+
+.laterWeather-div > div > div {
+    display: flex;
+    gap: 0.5vw;
+}
+
+.laterWeather-div > div:hover {
+    cursor: pointer;
+}
+
+.displayedWeather {
+    background-color: rgba(128, 128, 128, 0.165);
+    padding: 5px;
+    border-radius: 3px;
+}
+
+h1, h2, .hourlyWeather-div button, h3, .laterWeather-div p:first-child {
+    color: white;
+}
+
+h5 {
+    text-align: center;
+}
+
+footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+    justify-content: center;
+    margin-top: auto;
+    padding-bottom: 2px;
+    height: 2vh;
+    width: 100vw;
+    overflow: auto;
+}
+
+a {
+    color: gray;
+    font-size: 12px;
+    text-decoration: none;
+}
