@@ -52,11 +52,12 @@ function processWeatherData (dataF, dataC) {
                 ...day,
                 'time': [getTime('US'), getTime('metric')],
                 'alerts': [
-                    dataF['alerts'].map((alert) => alert.headline), 
-                    dataC['alerts'].map((alert) => alert.headline)
+                    dataF['alerts'].map((alert) => [alert.headline, alert.description]), 
+                    dataC['alerts'].map((alert) => [alert.headline, alert.description])
                 ],
                 'temp': [dataF['currentConditions']['temp'], dataC['currentConditions']['temp']]
             };
+            console.log(day.alerts)
         }
 
         days.push(day);
