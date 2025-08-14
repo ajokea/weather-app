@@ -43,7 +43,7 @@ export default function getWeatherIcon (conditions) {
         return icons.clear;
     } else if (conditions.startsWith('thunder') || conditions.startsWith('storm')) {
         return icons.storm;
-    } else if (conditions.startsWith('rain')) {
+    } else if (conditions.startsWith('rain') || conditions.startsWith('hail') || conditions.startsWith('sleet')) {
         return icons.rain;
     } else if (conditions.startsWith('partially cloudy')) {
         return icons['partly cloudy'];
