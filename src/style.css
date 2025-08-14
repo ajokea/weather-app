@@ -54,21 +54,23 @@ form {
     backdrop-filter: blur(3px);
 }
 
-.error {
+.popup {
     position: fixed;
-    height: 150px;
+    height: fit-content;
+    padding: 15px;
     width: 350px;
     z-index: 1;
     left: 38vw;
-    background-color: white;
+    top: 32vh;
+    background-color: gray;
     border: solid black 2px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    color: red;
+    color: white;
 }
 
-.error button {
+.popup button {
     border: solid black 1px;
     border-radius: 50%;
     width: 20px;
@@ -78,11 +80,12 @@ form {
     margin-top: 3px;
     margin-right: 3px;
     margin-left: auto;
-    padding: 0;
+    padding: 1px 0 0 0;
 }
 
-.error p {
+.popup p {
     margin: 35px auto;
+    text-align: center;
 }
 
 .weather-div {
@@ -122,7 +125,7 @@ button {
     color: inherit;
 }
 
-button:first-child {
+.weather-div button:first-child {
     padding-left: 3px;
 }
 
@@ -195,6 +198,10 @@ h1, h2, .hourlyWeather-div button, h3, .laterWeather-div p:first-child {
 
 h5 {
     text-align: center;
+}
+
+h5:hover {
+    cursor: pointer;
 }
 
 footer {
