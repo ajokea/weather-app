@@ -4,15 +4,15 @@ import getWeatherIcon from "./weatherIcons";
 
 const body = document.body;
 
-function displayErrorMessage () {
+function displayPopup (message) {
     let backdrop = document.createElement('div');
     backdrop.className = 'backdrop';
     
     let popup = document.createElement('div');
-    popup.className = 'error';
+    popup.className = 'popup';
 
-    let pError = document.createElement('p');
-    pError.textContent = 'Please enter a valid location.';
+    let popupText = document.createElement('p');
+    popupText.textContent = message;
 
     let cancelButton = document.createElement('button');
     cancelButton.textContent = "X";
@@ -21,7 +21,7 @@ function displayErrorMessage () {
         body.removeChild(backdrop);
     })
 
-    popup.append(cancelButton, pError);
+    popup.append(cancelButton, popupText);
     body.append(backdrop, popup);
 }
 
@@ -30,7 +30,7 @@ async function newSearch (location) {
         let result = await getWeatherData(location);
         displayWeather(result.address, [result.weatherDataF, result.weatherDataC]);
     } catch (error) {
-        displayErrorMessage(error);
+        displayPopup('Please enter a valid location.');
     }
 }
 
@@ -130,8 +130,11 @@ function displayWeather (address, weatherData) {
         if ('alerts' in displayedWeather) {
             displayedWeather.alerts[units === 'US' ? 0 : 1].forEach((value) => {
                 let alert = document.createElement('h5');
-                alert.textContent = `\u26A0 ${value}`;
+                alert.textContent = `\u26A0 ${value[0]}`;
                 alert.style.color = 'white';
+                alert.addEventListener('click', () => {
+                    displayPopup(value[1]);
+                })
                 alertsDiv.appendChild(alert);
             })
         }
